@@ -4,6 +4,8 @@ import com.zibu.zibu.user.dto.*;
 import com.zibu.zibu.user.entity.User;
 import com.zibu.zibu.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +56,17 @@ public class UserService {
         userRepository.delete(user);
     }
 
+    @Transactional(readOnly = true)
+    public UserDetailsResponseDto getUserById(Long userId) {
+        User user = findUser(userId);
+        return UserDetailsResponseDto.from(user);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<UserDetailsResponseDto> getAllUsers(Pageable pageable) {
+        Page<User> usersPage = userRepository.findAll(pageable);
+        return usersPage.map(UserDetailsResponseDto::from);
+    }
 
     private User findUser(Long userId) {
         return userRepository.findById(userId)
