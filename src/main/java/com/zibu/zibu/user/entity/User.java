@@ -2,7 +2,6 @@ package com.zibu.zibu.user.entity;
 
 import com.zibu.zibu.userplan.entity.UserPlan;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
 @Getter
 @NoArgsConstructor
 @Entity
@@ -63,6 +61,14 @@ public class User {
             throw new IllegalArgumentException("닉네임은 비워둘 수 없습니다.");
         }
         this.nickname = newNickname;
+        return this;
+    }
+
+    public User updatePassword(String newPassword) {
+        if (newPassword == null || newPassword.isBlank()) {
+            throw new IllegalArgumentException("새 비밀번호는 비워둘 수 없습니다.");
+        }
+        this.password = newPassword;
         return this;
     }
 

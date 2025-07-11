@@ -1,8 +1,6 @@
 package com.zibu.zibu.user.service;
 
-import com.zibu.zibu.user.dto.UserNicknameUpdateResponseDto;
-import com.zibu.zibu.user.dto.UserSignUpRequestDto;
-import com.zibu.zibu.user.dto.UserSignUpResponseDto;
+import com.zibu.zibu.user.dto.*;
 import com.zibu.zibu.user.entity.User;
 import com.zibu.zibu.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,34 +15,55 @@ public class UserService {
 
     @Transactional
     public UserSignUpResponseDto signUpUser(UserSignUpRequestDto userSignUpRequestDto) {
-        validateUserInfo(userSignUpRequestDto);
+        validateEmailNotExists(userSignUpRequestDto.getEmail());
+        validateNicknameNotExists(userSignUpRequestDto.getNickname());
+
         User user = userSignUpRequestDto.toEntity();
         userRepository.save(user);
         return UserSignUpResponseDto.from(user);
 
     }
 
-    private void validateUserInfo(UserSignUpRequestDto userSignUpRequestDto) {
-        if (userRepository.findByEmail(userSignUpRequestDto.getEmail()).isPresent()) {
-            throw new IllegalStateException("이미 가입된 이메일입니다.");
-        }
-        if (userRepository.findByNickname(userSignUpRequestDto.getNickname()).isPresent()) {
-            throw new IllegalStateException("이미 존재하는 닉네임입니다.");
-        }
+    @Transactional
+    public UserNicknameUpdateResponseDto updateUserNickname(Long userId, UserNicknameUpdateRequestDto userNicknameUpdateRequestDto) {
+        User user = findUser(userId);
+
+        validateNicknameNotExists(userNicknameUpdateRequestDto.getNickname());
+
+        User updatedUser = user.updateNickname(userNicknameUpdateRequestDto.getNickname());
+
+        return UserNicknameUpdateResponseDto.from(updatedUser);
     }
 
     @Transactional
-    public UserNicknameUpdateResponseDto updateUserNickname(Long userId, String newNickname) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다. ID: " + userId));
+    public UserPasswordUpdateResponseDto updateUserPassword(Long userId, UserPasswordUpdateRequestDto userPasswordUpdateRequestDto) {
+        User user = findUser(userId);
 
-        if (userRepository.findByNickname(newNickname).isPresent()) {
-            throw new IllegalStateException("이미 존재하는 닉네임입니다.");
+        if (!user.getPassword().equals(userPasswordUpdateRequestDto.getCurrentPassword())) {
+            throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
         }
 
-        User updatedUser = user.updateNickname(newNickname);
+        User updatedUser = user.updatePassword(userPasswordUpdateRequestDto.getNewPassword());
 
-        return UserNicknameUpdateResponseDto.from(updatedUser);
+        return UserPasswordUpdateResponseDto.from(updatedUser);
+    }
+
+
+    private User findUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다. ID: " + userId));
+    }
+
+    private void validateEmailNotExists(String email) {
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new IllegalStateException("이미 가입된 이메일입니다.");
+        }
+    }
+
+    private void validateNicknameNotExists(String nickname) {
+        if (userRepository.findByNickname(nickname).isPresent()) {
+            throw new IllegalStateException("이미 존재하는 닉네임입니다.");
+        }
     }
 
 }

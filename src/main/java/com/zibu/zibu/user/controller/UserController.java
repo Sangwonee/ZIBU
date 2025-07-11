@@ -1,9 +1,6 @@
 package com.zibu.zibu.user.controller;
 
-import com.zibu.zibu.user.dto.UserNicknameUpdateRequestDto;
-import com.zibu.zibu.user.dto.UserNicknameUpdateResponseDto;
-import com.zibu.zibu.user.dto.UserSignUpRequestDto;
-import com.zibu.zibu.user.dto.UserSignUpResponseDto;
+import com.zibu.zibu.user.dto.*;
 import com.zibu.zibu.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +23,15 @@ public class UserController {
 
     @PatchMapping("/{userId}/nickname")
     public ResponseEntity<UserNicknameUpdateResponseDto> updateUserNickname(@PathVariable Long userId,
-                                                                            @Valid @RequestBody UserNicknameUpdateRequestDto request) {
-        UserNicknameUpdateResponseDto userNicknameUpdateResponseDto = userService.updateUserNickname(userId, request.getNickname());
+                                                                            @Valid @RequestBody UserNicknameUpdateRequestDto userNicknameUpdateRequestDto) {
+        UserNicknameUpdateResponseDto userNicknameUpdateResponseDto = userService.updateUserNickname(userId, userNicknameUpdateRequestDto);
         return ResponseEntity.ok(userNicknameUpdateResponseDto);
+    }
+
+    @PatchMapping("/{userId}/password")
+    public ResponseEntity<UserPasswordUpdateResponseDto> updateUserPassword(@PathVariable Long userId,
+                                                                            @Valid @RequestBody UserPasswordUpdateRequestDto request) {
+        UserPasswordUpdateResponseDto userPasswordUpdateResponseDto = userService.updateUserPassword(userId, request);
+        return ResponseEntity.ok(userPasswordUpdateResponseDto);
     }
 }
