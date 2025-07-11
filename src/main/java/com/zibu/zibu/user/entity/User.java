@@ -1,7 +1,8 @@
-package com.innerpeace.zibu.user.entity;
+package com.zibu.zibu.user.entity;
 
-import com.innerpeace.zibu.userplan.entity.UserPlan;
+import com.zibu.zibu.userplan.entity.UserPlan;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 @Getter
 @NoArgsConstructor
 @Entity
@@ -54,6 +56,13 @@ public class User {
 
     public static User of(String email, String password, String nickname) {
         return new User(email, password, nickname);
+    }
+
+    public void updateNickname(String newNickname) {
+        if (newNickname == null || newNickname.isBlank()) {
+            throw new IllegalArgumentException("닉네임은 비워둘 수 없습니다.");
+        }
+        this.nickname = newNickname;
     }
 
 }

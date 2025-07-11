@@ -1,9 +1,9 @@
-package com.innerpeace.zibu.user.service;
+package com.zibu.zibu.user.service;
 
-import com.innerpeace.zibu.user.dto.UserSignUpRequestDto;
-import com.innerpeace.zibu.user.dto.UserSignUpResponseDto;
-import com.innerpeace.zibu.user.entity.User;
-import com.innerpeace.zibu.user.repository.UserRepository;
+import com.zibu.zibu.user.dto.UserSignUpRequestDto;
+import com.zibu.zibu.user.dto.UserSignUpResponseDto;
+import com.zibu.zibu.user.entity.User;
+import com.zibu.zibu.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +30,18 @@ public class UserService {
         if (userRepository.findByNickname(userSignUpRequestDto.getNickname()).isPresent()) {
             throw new IllegalStateException("이미 존재하는 닉네임입니다.");
         }
+    }
+
+    @Transactional
+    public void updateUserNickname(Long userId, String newNickname) {
+        if (userRepository.findByNickname(newNickname).isPresent()) {
+            throw new IllegalStateException("이미 존재하는 닉네임입니다.");
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다. ID: " + userId));
+
+        user.updateNickname(newNickname);
     }
 
 }
