@@ -34,4 +34,10 @@ public class UserController {
         UserPasswordUpdateResponseDto userPasswordUpdateResponseDto = userService.updateUserPassword(userId, request);
         return ResponseEntity.ok(userPasswordUpdateResponseDto);
     }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.noContent().build();
+    }
 }

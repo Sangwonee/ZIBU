@@ -48,6 +48,12 @@ public class UserService {
         return UserPasswordUpdateResponseDto.from(updatedUser);
     }
 
+    @Transactional
+    public void deleteUser(Long userId) {
+        User user = findUser(userId);
+        userRepository.delete(user);
+    }
+
 
     private User findUser(Long userId) {
         return userRepository.findById(userId)
