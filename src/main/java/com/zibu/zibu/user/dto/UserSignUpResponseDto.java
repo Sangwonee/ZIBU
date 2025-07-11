@@ -1,6 +1,6 @@
-package com.innerpeace.zibu.user.dto;
+package com.zibu.zibu.user.dto;
 
-import com.innerpeace.zibu.user.entity.User;
+import com.zibu.zibu.user.entity.User;
 import lombok.Getter;
 
 @Getter

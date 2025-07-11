@@ -1,7 +1,7 @@
-package com.innerpeace.zibu.plan.entity;
+package com.zibu.zibu.plan.entity;
 
-import com.innerpeace.zibu.plandetail.entity.PlanDetail;
-import com.innerpeace.zibu.userplan.entity.UserPlan;
+import com.zibu.zibu.plandetail.entity.PlanDetail;
+import com.zibu.zibu.userplan.entity.UserPlan;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package com.innerpeace.zibu;
+package com.zibu.zibu;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

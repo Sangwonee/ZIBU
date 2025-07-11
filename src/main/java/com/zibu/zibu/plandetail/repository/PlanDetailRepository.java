@@ -1,6 +1,6 @@
-package com.innerpeace.zibu.plandetail.repository;
+package com.zibu.zibu.plandetail.repository;
 
-import com.innerpeace.zibu.plandetail.entity.PlanDetail;
+import com.zibu.zibu.plandetail.entity.PlanDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PlanDetailRepository extends JpaRepository<PlanDetail, Long> {

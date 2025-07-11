@@ -1,6 +1,6 @@
-package com.innerpeace.zibu.user.repository;
+package com.zibu.zibu.user.repository;
 
-import com.innerpeace.zibu.user.entity.User;
+import com.zibu.zibu.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
