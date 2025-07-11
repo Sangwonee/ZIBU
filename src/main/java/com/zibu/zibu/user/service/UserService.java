@@ -1,5 +1,6 @@
 package com.zibu.zibu.user.service;
 
+import com.zibu.zibu.user.dto.UserNicknameUpdateResponseDto;
 import com.zibu.zibu.user.dto.UserSignUpRequestDto;
 import com.zibu.zibu.user.dto.UserSignUpResponseDto;
 import com.zibu.zibu.user.entity.User;
@@ -33,15 +34,17 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUserNickname(Long userId, String newNickname) {
+    public UserNicknameUpdateResponseDto updateUserNickname(Long userId, String newNickname) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다. ID: " + userId));
+
         if (userRepository.findByNickname(newNickname).isPresent()) {
             throw new IllegalStateException("이미 존재하는 닉네임입니다.");
         }
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다. ID: " + userId));
+        User updatedUser = user.updateNickname(newNickname);
 
-        user.updateNickname(newNickname);
+        return UserNicknameUpdateResponseDto.from(updatedUser);
     }
 
 }

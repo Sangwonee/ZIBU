@@ -1,6 +1,7 @@
 package com.zibu.zibu.user.controller;
 
 import com.zibu.zibu.user.dto.UserNicknameUpdateRequestDto;
+import com.zibu.zibu.user.dto.UserNicknameUpdateResponseDto;
 import com.zibu.zibu.user.dto.UserSignUpRequestDto;
 import com.zibu.zibu.user.dto.UserSignUpResponseDto;
 import com.zibu.zibu.user.service.UserService;
@@ -19,14 +20,14 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity<UserSignUpResponseDto> signUp(@RequestBody UserSignUpRequestDto userSignUpRequestDto) {
-        UserSignUpResponseDto responseDto = userService.signUpUser(userSignUpRequestDto);
-        return ResponseEntity.ok(responseDto);
+        UserSignUpResponseDto userSignUpResponseDto = userService.signUpUser(userSignUpRequestDto);
+        return ResponseEntity.ok(userSignUpResponseDto);
     }
 
     @PatchMapping("/{userId}/nickname")
-    public ResponseEntity<Void> updateUserNickname(@PathVariable Long userId,
-                                                   @Valid @RequestBody UserNicknameUpdateRequestDto request) {
-        userService.updateUserNickname(userId, request.getNickname());
-        return ResponseEntity.ok().build();
+    public ResponseEntity<UserNicknameUpdateResponseDto> updateUserNickname(@PathVariable Long userId,
+                                                                            @Valid @RequestBody UserNicknameUpdateRequestDto request) {
+        UserNicknameUpdateResponseDto userNicknameUpdateResponseDto = userService.updateUserNickname(userId, request.getNickname());
+        return ResponseEntity.ok(userNicknameUpdateResponseDto);
     }
 }

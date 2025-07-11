@@ -58,11 +58,12 @@ public class User {
         return new User(email, password, nickname);
     }
 
-    public void updateNickname(String newNickname) {
+    public User updateNickname(String newNickname) {
         if (newNickname == null || newNickname.isBlank()) {
             throw new IllegalArgumentException("닉네임은 비워둘 수 없습니다.");
         }
         this.nickname = newNickname;
+        return this;
     }
 
 }
